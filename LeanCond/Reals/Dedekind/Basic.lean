@@ -247,23 +247,47 @@ def Dadd (x y : Dedekind) : Dedekind :=
     intro a b ab
     simp
     intro i xi j yj bij
-    exact ⟨a, b, x.U_mono (le_trans (le_add_left b a))⟩
-    linarith
+    use a 
+    have k1 : x.U a := by sorry 
+    use k1 
+    use j 
+    use yj 
+    sorry 
 , L_rounded := by
     intro q
     simp
     intro a b hxa hyb hsum
+
     rcases x.L_rounded hxa with ⟨a', ha', hxa'⟩
     rcases y.L_rounded hyb with ⟨b', hb', hyb'⟩
-    use a'+b
+    use a' + b'
+    constructor
+    · linarith
+      sorry 
+    · simp [add_pos]; linarith 
+      sorry 
   U_rounded := by
     intro a
     simp
-    intro b uxb c uyc hsum
-
-
-
-    sorry
+    intros b uxb c uyc hbc
+    let m := (b * c + a) / 2
+    use m
+    constructor
+    · have k1 : b * c < m  := by 
+        sorry 
+      aesop 
+      linarith 
+    · use b 
+      constructor 
+      · use uxb 
+         
+      · use (b/4) 
+        aesop 
+        · sorry 
+        ·  
+          sorry  
+        sorry
+       
 , located := by
     intros q₁ q₂ h
     by_cases H : x.L (q₂ - q₁)
@@ -474,10 +498,12 @@ def W_sets (s : S_val) (r_i : I_interval) : Prop :=
 
 @[instance] lemma W_nat_set_ODisc (n : PNat) (r_i : I_interval) : ODisc (W_nat_set n r_i) :=
 by unfold W_nat_set; exact Or.ODisc
+
 @[instance] lemma W_star_set_ODisc (r_i : I_interval) : ODisc (W_star_set r_i) :=
 by unfold W_star_set; exact hU_prop_ODisc r_i
 @[instance] lemma W_sets_ODisc (s : S_val) (r_i : I_interval) : ODisc (W_sets s r_i) :=
 by unfold W_sets; cases s <;> simp <;> infer_instance
+
 
 axiom W_nat_set_is_open (n : PNat) : Prop -- Placeholder for "openness"
 axiom W_star_set_is_open : Prop       -- Placeholder for "openness" (hU_open_prop)
